@@ -115,5 +115,5 @@ MicroSIP-3.22.3-src/
 | **Main Softphone Window** | `IDD_MAIN` | Root frame hosting tabs, status bar, and tray icon | Branded as `AbrhaSIP` |
 | **Dialer Tab** | `IDD_DIALER` | Numeric keypad, call status, and account indicator | Auto Answer (AA) button hidden |
 | **Settings Dialog** | `IDD_SETTINGS` | Audio, network, and application preferences | Auto Answer label, dropdown, options & help hidden (`NOT WS_VISIBLE`) |
-| **Account Editor** | `IDD_ACCOUNT` | SIP account registration settings | SIP Server, Proxy, and Domain locked to `10.0.124.1:3096` for new accounts |
+| **Account Editor** | `IDD_ACCOUNT` | SIP account registration settings | All fields read-only/disabled except Account Name, Username, Login, Password, and Display Name |
 | **Call Transfer Modal** | `IDD_TRANSFER` | Number entry and transfer action selection | Blind Transfer triggers Asterisk `*2` DTMF code |

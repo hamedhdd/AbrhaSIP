@@ -252,16 +252,6 @@ void AccountDlg::Load(int id)
 	edit->SetWindowText(m_Account.proxy);
 	edit = (CEdit*)GetDlgItem(IDC_EDIT_DOMAIN);
 	edit->SetWindowText(m_Account.domain);
-	if (id == -1) {
-		((CEdit*)GetDlgItem(IDC_EDIT_SERVER))->SetReadOnly(TRUE);
-		((CEdit*)GetDlgItem(IDC_EDIT_PROXY))->SetReadOnly(TRUE);
-		((CEdit*)GetDlgItem(IDC_EDIT_DOMAIN))->SetReadOnly(TRUE);
-	}
-	else {
-		((CEdit*)GetDlgItem(IDC_EDIT_SERVER))->SetReadOnly(FALSE);
-		((CEdit*)GetDlgItem(IDC_EDIT_PROXY))->SetReadOnly(FALSE);
-		((CEdit*)GetDlgItem(IDC_EDIT_DOMAIN))->SetReadOnly(FALSE);
-	}
 
 	edit = (CEdit*)GetDlgItem(IDC_EDIT_AUTHID);
 	edit->SetWindowText(m_Account.authID);
@@ -358,6 +348,32 @@ void AccountDlg::Load(int id)
     else {
         GetDlgItem(IDC_SYSLINK_ACCOUNT_DELETE)->ShowWindow(SW_HIDE);
     }
+
+	// Enforce read-only / disabled for all settings except:
+	// Account Name, Username, Login (AuthID), Password, and Display Name
+	((CEdit*)GetDlgItem(IDC_EDIT_SERVER))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_EDIT_PROXY))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_EDIT_DOMAIN))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_EDIT_VOICEMAIL))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_ACCOUNT_DIALING_PREFIX))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_ACCOUNT_DIAL_PLAN))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_ACCOUNT_REGISTER_REFRESH))->SetReadOnly(TRUE);
+	((CEdit*)GetDlgItem(IDC_ACCOUNT_KEEP_ALIVE))->SetReadOnly(TRUE);
+
+	GetDlgItem(IDC_SRTP)->EnableWindow(FALSE);
+	GetDlgItem(IDC_TRANSPORT)->EnableWindow(FALSE);
+	GetDlgItem(IDC_PUBLIC_ADDR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_ACCOUNT_HIDE_CID)->EnableWindow(FALSE);
+	GetDlgItem(IDC_PUBLISH)->EnableWindow(FALSE);
+	GetDlgItem(IDC_REWRITE)->EnableWindow(FALSE);
+	GetDlgItem(IDC_ICE)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SESSION_TIMER)->EnableWindow(FALSE);
+
+	((CEdit*)GetDlgItem(IDC_ACCOUNT_LABEL))->SetReadOnly(FALSE);
+	((CEdit*)GetDlgItem(IDC_EDIT_DISPLAYNAME))->SetReadOnly(FALSE);
+	((CEdit*)GetDlgItem(IDC_EDIT_USERNAME))->SetReadOnly(FALSE);
+	((CEdit*)GetDlgItem(IDC_EDIT_AUTHID))->SetReadOnly(FALSE);
+	((CEdit*)GetDlgItem(IDC_EDIT_PASSWORD))->SetReadOnly(FALSE);
 }
 
 void AccountDlg::OnBnClickedOk()

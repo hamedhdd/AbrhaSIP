@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Codebase architecture map `PROJECT_MAP.md` cataloging data flow, controller index, and UI components.
 
 ### Changed
+- Locked all Account settings as read-only / disabled in `AccountDlg.cpp` except for Account Name (`IDC_ACCOUNT_LABEL`), Username (`IDC_EDIT_USERNAME`), Login (`IDC_EDIT_AUTHID`), Password (`IDC_EDIT_PASSWORD`), and Display Name (`IDC_EDIT_DISPLAYNAME`).
 - Re-routed Blind Transfer action in `MessagesDlg.cpp` to dispatch Asterisk in-call feature code `*2` with destination number via DTMF instead of SIP `REFER`.
 - Changed default blind transfer feature code (`featureCodeBT`) in `settings.cpp` to `*2` and enabled feature codes by default (`enableFeatureCodeBT = 1`).
 - Updated external links in `define.h` (`_GLOBAL_MENU_WEBSITE`, `_GLOBAL_MENU_HELP`, `_GLOBAL_URL_CHECK_VERSION`) to point to the GitHub repository.
