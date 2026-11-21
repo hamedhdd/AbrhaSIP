@@ -1,7 +1,10 @@
 https://github.com/hamedhdd/AbrhaSIP/releases/latest
-3.22.4
-AbrhaSIP 3.22.4
+3.23.6
+AbrhaSIP 3.23.6
+- Updated base to MicroSIP 3.23.6
+- Status bar dark theme support and UI optimizations
 - Asterisk Transfer code (*2) support for blind transfer
-- Preserved default server/proxy/domain 10.0.124.1:3096 for new accounts
+- Default server/proxy/domain locked to 10.0.124.1:3096 for new accounts
+- All account settings locked to read-only except credentials and names
 - Auto-Answer UI controls disabled in settings and main dialer
 - Update checking linked directly to GitHub releases

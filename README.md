@@ -50,9 +50,16 @@
    & "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" "microsip.vcxproj" /p:Configuration=Release /p:Platform=Win32 /m
    ```
 
-3. **Output Binary**:
-   The generated executable will be placed at:
-   `Release\AbrhaSIP.exe` (~4.5 MB)
+3. **Output Binaries & Packages**:
+   - **Standalone Executable**: `Release\AbrhaSIP.exe` (~4.56 MB)
+   - **Installer Setup**: `Release\AbrhaSIP-3.23.6-Setup.exe` (~5.22 MB)
+   - **Portable Package**: `Release\AbrhaSIP-3.23.6-portable.zip` (~4.89 MB)
+
+4. **Building Installer**:
+   Compile the NSIS script using `makensis`:
+   ```powershell
+   & "C:\Users\Hamed\Desktop\Projects\nsis\makensis.exe" ".\installer\AbrhaSIP.nsi"
+   ```
 
 ---
 
