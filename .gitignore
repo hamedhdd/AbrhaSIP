@@ -1,0 +1,27 @@
+# Visual Studio / MSBuild
+.vs/
+Debug/
+Release/
+x64/
+x86/
+microsip/
+*.user
+*.aps
+*.suo
+*.ipch
+*.log
+*.tlog
+*.pch
+*.ilk
+*.iobj
+*.ipdb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Packages / Vcpkg / Dependencies
+packages/
+vcpkg_installed/
+opus-1.5.2/
+
