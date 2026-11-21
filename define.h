@@ -64,10 +64,10 @@
 #define _GLOBAL_SETT_AA_DEFAULT "button"
 
 #define _GLOBAL_BUSINESS_FEATURE "This feature is not available in the free version."
-#define _GLOBAL_MENU_WEBSITE "https://www.microsip.org/"
-#define _GLOBAL_MENU_HELP "https://www.microsip.org/help"
-#define _GLOBAL_HELP_WEBSITE "https://www.microsip.org/help"
-#define _GLOBAL_URL_CHECK_VERSION "https://www.microsip.org/check-version?ver="
+#define _GLOBAL_MENU_WEBSITE "https://github.com/hamedhdd/AbrhaSIP"
+#define _GLOBAL_MENU_HELP "https://github.com/hamedhdd/AbrhaSIP"
+#define _GLOBAL_HELP_WEBSITE "https://github.com/hamedhdd/AbrhaSIP"
+#define _GLOBAL_URL_CHECK_VERSION "https://raw.githubusercontent.com/hamedhdd/AbrhaSIP/main/update.txt"
 
 #define _GLOBAL_EC_DEFAULT "1"
 

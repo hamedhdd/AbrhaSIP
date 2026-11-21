@@ -1,0 +1,36 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [3.22.4] - 2026-11-21
+
+### Added
+- Linked version checker in `mainDlg.cpp` to custom GitHub repository raw manifest (`https://raw.githubusercontent.com/hamedhdd/AbrhaSIP/main/update.txt`).
+- Domain whitelisting for `github.com` and `githubusercontent.com` inside HTTPS URL validation routines.
+- `update.txt` manifest format for GitHub release notifications.
+- Codebase architecture map `PROJECT_MAP.md` cataloging data flow, controller index, and UI components.
+
+### Changed
+- Re-routed Blind Transfer action in `MessagesDlg.cpp` to dispatch Asterisk in-call feature code `*2` with destination number via DTMF instead of SIP `REFER`.
+- Changed default blind transfer feature code (`featureCodeBT`) in `settings.cpp` to `*2` and enabled feature codes by default (`enableFeatureCodeBT = 1`).
+- Updated external links in `define.h` (`_GLOBAL_MENU_WEBSITE`, `_GLOBAL_MENU_HELP`, `_GLOBAL_URL_CHECK_VERSION`) to point to the GitHub repository.
+- Incremented project version to `3.22.4` in `const.h`.
+
+### Fixed
+- Ensured DTMF feature code dispatch utilizes forced execution (`DTMF(str, true)`) so UI dialer states do not drop transfer requests.
+
+## [3.22.3] - 2026-06-21
+
+### Added
+- Pre-filled hardcoded connection values (`10.0.124.1:3096`) for SIP Server, SIP Proxy, and Domain when adding new accounts (`AccountDlg.cpp`).
+- Enforced read-only state for Server, Proxy, and Domain fields during new account creation.
+
+### Changed
+- Brand renamed to `AbrhaSIP` across executable target name and window titles.
+
+### Security
+- Locked server and proxy endpoint modifications for newly registered extensions.
+- Hidden Auto Answer controls across Settings dialog (`res/dialog.rc2`) and main form dialer (`Dialer.cpp`).

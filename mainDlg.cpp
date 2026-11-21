@@ -5481,11 +5481,7 @@ void CmainDlg::OnCheckUpdates()
 void CmainDlg::CheckUpdates()
 {
 	CString url;
-	url = _T("http://update.microsip.org/softphone-update.txt");
-	url.AppendFormat(_T("?version=%s&client=%s"), _T(_GLOBAL_VERSION), CString(urlencode(MSIP::Utf8EncodeUni(CString(_T(_GLOBAL_NAME_VISIBLE))))));
-#ifndef _GLOBAL_VIDEO
-	url.Append(_T("&lite=1"));
-#endif
+	url = _T("https://raw.githubusercontent.com/hamedhdd/AbrhaSIP/main/update.txt");
 	URLGetAsync(url, m_hWnd, UM_UPDATE_CHECKER_LOADED);
 }
 
@@ -5504,7 +5500,11 @@ LRESULT CmainDlg::OnUpdateCheckerLoaded(WPARAM wParam, LPARAM lParam)
 				CString strServer;
 				CString strObject;
 				INTERNET_PORT nPort;
-				if (AfxParseURL(CString(url), dwServiceType, strServer, strObject, nPort) && dwServiceType == AFX_INET_SERVICE_HTTPS && strServer.Right(13) == _T(".microsip.org")) {
+				if (AfxParseURL(CString(url), dwServiceType, strServer, strObject, nPort) &&
+					dwServiceType == AFX_INET_SERVICE_HTTPS &&
+					(strServer.Right(10) == _T("github.com") ||
+					 strServer.Right(23) == _T("githubusercontent.com") ||
+					 strServer.Right(13) == _T(".microsip.org"))) {
 					allowed = true;
 				}
 				int pos1 = response->body.Find("\n", pos + 1);

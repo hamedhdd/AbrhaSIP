@@ -1,0 +1,7 @@
+https://github.com/hamedhdd/AbrhaSIP/releases/latest
+3.22.4
+AbrhaSIP 3.22.4
+- Asterisk Transfer code (*2) support for blind transfer
+- Preserved default server/proxy/domain 10.0.124.1:3096 for new accounts
+- Auto-Answer UI controls disabled in settings and main dialer
+- Update checking linked directly to GitHub releases

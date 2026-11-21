@@ -490,7 +490,7 @@ void AccountSettings::Init()
     featureCodeCP.ReleaseBuffer();
 
     ptr = featureCodeBT.GetBuffer(255);
-    GetPrivateProfileString(section, _T("featureCodeBT"), _T("##"), ptr, 256, iniFile);
+    GetPrivateProfileString(section, _T("featureCodeBT"), _T("*2"), ptr, 256, iniFile);
     featureCodeBT.ReleaseBuffer();
 
     ptr = featureCodeAT.GetBuffer(255);
@@ -503,7 +503,7 @@ void AccountSettings::Init()
     enableFeatureCodeCP = _wtoi(str);
 
     ptr = str.GetBuffer(255);
-    GetPrivateProfileString(section, _T("enableFeatureCodeBT"), _T("0"), ptr, 256, iniFileRec);
+    GetPrivateProfileString(section, _T("enableFeatureCodeBT"), _T("1"), ptr, 256, iniFileRec);
     str.ReleaseBuffer();
     enableFeatureCodeBT = _wtoi(str);
 

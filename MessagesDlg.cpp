@@ -1543,17 +1543,10 @@ bool MessagesDlg::CallAction(int action, CString number, pjsua_call_id call_id)
 					return true;
 				}
 				else {
-					bool blindTransferFC = accountSettings.enableFeatureCodeBT && !accountSettings.featureCodeBT.IsEmpty();
-					CString str = accountSettings.featureCodeBT;
-					if (blindTransferFC) {
-						str.Append(number);
-						mainDlg->pageDialer->DTMF(str);
-					}
-					else {
-						char* buf = MSIP::WideCharToPjStr(numberFormated);
-						pjsua_call_xfer(messagesContactSelected->callId, &pj_str(buf), NULL);
-						free(buf);
-					}
+					// Blind transfer button behavior: uses Asterisk transfer code *2
+					CString str = accountSettings.featureCodeBT.IsEmpty() ? _T("*2") : accountSettings.featureCodeBT;
+					str.Append(number);
+					mainDlg->pageDialer->DTMF(str, true);
 				}
 				return true;
 			}
