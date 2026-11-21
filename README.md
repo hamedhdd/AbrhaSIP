@@ -25,6 +25,11 @@
    - Replaced default vendor update URL with direct GitHub Release verification (`https://raw.githubusercontent.com/hamedhdd/AbrhaSIP/main/update.txt`).
    - Validates HTTPS update payloads directly against GitHub repositories and prompts users with direct download links to new releases.
 
+5. **Custom Cloud Headset Identity & Multi-Resolution Icons**:
+   - Custom application branding (`res/microsip.ico`) with anti-aliased alpha transparency and zero white borders.
+   - Multi-resolution icon layers (16x16 up to 256x256) embedded in PE header for high-DPI Windows 10/11 taskbars, start menus, and desktop shortcuts.
+   - Matching desaturated tray icon (`res/tray_inactive.ico`) indicating disconnected/unregistered PBX states.
+
 ---
 
 ## Prerequisites & Build Instructions

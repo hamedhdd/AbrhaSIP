@@ -21,7 +21,14 @@ MicroSIP-3.22.3-src/
 ├── res/                        # Visual assets and sub-resource definitions
 │   ├── dialog.rc2              # Dialog template resource script (Settings, Transfer, Add, etc.)
 │   ├── menu.rc2                # Context and main menu definitions
+│   ├── microsip.ico            # Custom application & window icon (Cloud headset branding, 16-256px)
+│   ├── tray_inactive.ico       # Offline/unregistered tray icon (Grayscale cloud headset, 16-32px)
 │   └── *.ico / *.bmp           # Application and status tray icons
+│
+├── installer/
+│   └── AbrhaSIP.nsi            # NSIS installer definition script (builds standalone setup exe)
+│
+├── build_icons.py              # Script to build multi-resolution alpha de-fringed Windows icons
 │
 ├── Core Controllers & Views:
 │   ├── mainDlg.h / .cpp        # Primary application coordinator, PJSIP lifecycle, background updates
