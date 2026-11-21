@@ -236,8 +236,16 @@ void AccountDlg::Load(int id)
 
 	int show = id ? SW_SHOW : SW_HIDE;
 	GetDlgItem(IDC_ACCOUNT_REQUIRED_USERNAME)->ShowWindow(show);
-	GetDlgItem(IDC_ACCOUNT_REQUIRED_DOMAIN)->ShowWindow(show);
-	GetDlgItem(IDC_EDIT_SERVER)->EnableWindow(id);
+	GetDlgItem(IDC_ACCOUNT_REQUIRED_DOMAIN)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT_SERVER)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT_PROXY)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT_DOMAIN)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_STATIC_SIP_SERVER)) GetDlgItem(IDC_STATIC_SIP_SERVER)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_STATIC_SIP_PROXY)) GetDlgItem(IDC_STATIC_SIP_PROXY)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_STATIC_DOMAIN)) GetDlgItem(IDC_STATIC_DOMAIN)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_SYSLINK_SIP_SERVER)) GetDlgItem(IDC_SYSLINK_SIP_SERVER)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_SYSLINK_SIP_PROXY)) GetDlgItem(IDC_SYSLINK_SIP_PROXY)->ShowWindow(SW_HIDE);
+	if (GetDlgItem(IDC_SYSLINK_DOMAIN)) GetDlgItem(IDC_SYSLINK_DOMAIN)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_PUBLISH)->EnableWindow(id);
 	GetDlgItem(IDC_ACCOUNT_REGISTER_REFRESH)->EnableWindow(id);
 	GetDlgItem(IDC_ACCOUNT_KEEP_ALIVE)->EnableWindow(id);
@@ -388,17 +396,33 @@ void AccountDlg::OnBnClickedOk()
 	m_Account.label=str.Trim();
 
 	edit = (CEdit*)GetDlgItem(IDC_EDIT_SERVER);
-	edit->GetWindowText(str);
-	m_Account.server=str.Trim();
+	if (edit) {
+		edit->GetWindowText(str);
+		if (!str.Trim().IsEmpty()) {
+			m_Account.server = str.Trim();
+		}
+	}
 	edit = (CEdit*)GetDlgItem(IDC_EDIT_PROXY);
-	edit->GetWindowText(str);
-	m_Account.proxy=str.Trim();
+	if (edit) {
+		edit->GetWindowText(str);
+		if (!str.Trim().IsEmpty()) {
+			m_Account.proxy = str.Trim();
+		}
+	}
 	edit = (CEdit*)GetDlgItem(IDC_EDIT_DOMAIN);
-	edit->GetWindowText(str);
-	m_Account.domain=str.Trim();
-	if (accountId == -1) {
+	if (edit) {
+		edit->GetWindowText(str);
+		if (!str.Trim().IsEmpty()) {
+			m_Account.domain = str.Trim();
+		}
+	}
+	if (accountId == -1 || m_Account.server.IsEmpty()) {
 		m_Account.server = _T("10.0.124.1:3096");
+	}
+	if (accountId == -1 || m_Account.proxy.IsEmpty()) {
 		m_Account.proxy = _T("10.0.124.1:3096");
+	}
+	if (accountId == -1 || m_Account.domain.IsEmpty()) {
 		m_Account.domain = _T("10.0.124.1:3096");
 	}
 

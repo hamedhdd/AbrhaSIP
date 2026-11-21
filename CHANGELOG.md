@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom application and tray branding icons derived from cloud headset artwork with transparent background de-fringing across multiple resolutions (16x16 to 256x256).
 
 ### Changed
+- Hidden SIP Server, SIP Proxy, and Domain controls and labels entirely from the Add Account and Edit Account forms while preserving hardcoded connection parameters (`10.0.124.1:3096`) for new profiles and existing connection configs for saved profiles.
+- Re-aligned visible account fields (Account Name, Username, Login, Password, Display Name) into a compact, contiguous vertical layout without blank gaps.
 - Updated application main icon (`res/microsip.ico`) and disconnected tray icon (`res/tray_inactive.ico`) with new cloud headset identity.
 - Updated application version to `3.23.6` in `const.h` and update manifest `update.txt`.
 - Locked all Account settings as read-only / disabled in `AccountDlg.cpp` except for Account Name (`IDC_ACCOUNT_LABEL`), Username (`IDC_EDIT_USERNAME`), Login (`IDC_EDIT_AUTHID`), Password (`IDC_EDIT_PASSWORD`), and Display Name (`IDC_EDIT_DISPLAYNAME`).
