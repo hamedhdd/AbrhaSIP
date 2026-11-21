@@ -12,9 +12,7 @@
 
 2. **Hardcoded Connection Settings & Hidden Server Fields**:
    - Creating a new SIP account automatically locks and defaults:
-     - **SIP Server**: `10.0.124.1:3096`
-     - **SIP Proxy**: `10.0.124.1:3096`
-     - **SIP Domain**: `10.0.124.1:3096`
+
    - UI input fields and labels for SIP Server, SIP Proxy, and Domain are completely hidden from both Add Account and Edit Account dialogs (`res/dialog.rc2` and `AccountDlg.cpp`).
    - All connection settings are strictly preserved behind the scenes, and the form layout is compacted so only the relevant editable fields (Account Name, Username, Login, Password, Display Name) and locked auxiliary options appear.
 
