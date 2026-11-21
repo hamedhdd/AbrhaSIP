@@ -32,7 +32,7 @@ MicroSIP-3.22.3-src/
 │
 ├── Core Controllers & Views:
 │   ├── mainDlg.h / .cpp        # Primary application coordinator, PJSIP lifecycle, background updates
-│   ├── Dialer.h / .cpp         # Main softphone dialer tab, DTMF generation, call initiation
+│   ├── Dialer.h / .cpp         # Main softphone dialer tab, audio device selector popup menus, DTMF, mute handling
 │   ├── MessagesDlg.h / .cpp    # Active call manager, messaging tab, call transfer & DTMF feature actions
 │   ├── AccountDlg.h / .cpp     # Account setup and editor dialog (Server/Proxy/Domain hidden, locked to 10.0.124.1:3096)
 │   ├── Transfer.h / .cpp       # Call transfer popup modal (Attended vs Blind Asterisk Transfer)

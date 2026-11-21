@@ -17,6 +17,7 @@
  */
 
 #include "StdAfx.h"
+#include <vector>
 #include "Dialer.h"
 #include "global.h"
 #include "settings.h"
@@ -395,6 +396,8 @@ BOOL Dialer::OnInitDialog()
 		CString str = Translate(_T("Voicemail Number"));
 		m_ToolTip.AddTool(&m_ButtonVoicemail, str);
 		m_ToolTip.AddTool(&m_ButtonVoicemailDisabled, str);
+		m_ToolTip.AddTool(GetDlgItem(IDC_BUTTON_MUTE_OUTPUT), GetAudioOutputTooltip());
+		m_ToolTip.AddTool(GetDlgItem(IDC_BUTTON_MUTE_INPUT), GetAudioInputTooltip());
 		m_ToolTip.Activate(TRUE);
 	}
 
@@ -799,6 +802,20 @@ BOOL Dialer::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_ToolTip) {
 		m_ToolTip.RelayEvent(pMsg);
+	}
+
+	if (pMsg->message == WM_RBUTTONUP) {
+		CWnd* pWnd = CWnd::FromHandle(pMsg->hwnd);
+		if (pWnd) {
+			if (pWnd->GetDlgCtrlID() == IDC_BUTTON_MUTE_INPUT) {
+				ToggleMuteInput();
+				return TRUE;
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_BUTTON_MUTE_OUTPUT) {
+				ToggleMuteOutput();
+				return TRUE;
+			}
+		}
 	}
 
 	BOOL catched = FALSE;
@@ -1464,16 +1481,37 @@ void Dialer::OnMouseMove(UINT nFlags, CPoint pt)
 
 void Dialer::MuteOutput(bool state)
 {
+	muteOutput = state;
 	CButton *button = (CButton*)GetDlgItem(IDC_BUTTON_MUTE_OUTPUT);
-	button->SetCheck(!state ? BST_CHECKED : BST_UNCHECKED);
-	OnBnClickedMuteOutput();
+	if (button) {
+		button->SetIcon(muteOutput ? m_hIconMutedOutput : m_hIconMuteOutput);
+	}
+	OnHScroll(0, 0, NULL);
+	UpdateAudioTooltips();
 }
 
 void Dialer::MuteInput(bool state)
 {
+	muteInput = state;
 	CButton *button = (CButton*)GetDlgItem(IDC_BUTTON_MUTE_INPUT);
-	button->SetCheck(!state ? BST_CHECKED : BST_UNCHECKED);
-	OnBnClickedMuteInput();
+	if (button) {
+		button->SetIcon(muteInput ? m_hIconMutedInput : m_hIconMuteInput);
+	}
+	OnHScroll(0, 0, NULL);
+	if (accountSettings.headsetSupport) {
+		Hid::SetMute(muteInput);
+	}
+	UpdateAudioTooltips();
+}
+
+void Dialer::ToggleMuteOutput()
+{
+	MuteOutput(!muteOutput);
+}
+
+void Dialer::ToggleMuteInput()
+{
+	MuteInput(!muteInput);
 }
 
 void Dialer::OnHScroll(UINT, UINT, CScrollBar* sender)
@@ -1561,35 +1599,150 @@ void Dialer::OnBnClickedPlusOutput()
 void Dialer::OnBnClickedMuteOutput()
 {
 	CButton *button = (CButton*)GetDlgItem(IDC_BUTTON_MUTE_OUTPUT);
-	if (button->GetCheck() == BST_CHECKED) {
-		button->SetIcon(m_hIconMuteOutput);
-		muteOutput = FALSE;
-		OnHScroll(0, 0, NULL);
+
+	CMenu menu;
+	menu.CreatePopupMenu();
+
+	bool isDefault = accountSettings.audioOutputDevice.IsEmpty();
+	menu.AppendMenu(MF_STRING | (isDefault ? MF_CHECKED : 0), ID_AUDIO_OUT_DEV_BASE, Translate(_T("Default")));
+
+	unsigned count = PJMEDIA_AUD_MAX_DEVS;
+	pjmedia_aud_dev_info aud_dev_info[PJMEDIA_AUD_MAX_DEVS];
+	if (is_pjsua_running()) {
+		pjsua_enum_aud_devs(aud_dev_info, &count);
+	} else {
+		count = 0;
 	}
-	else {
-		button->SetIcon(m_hIconMutedOutput);
-		muteOutput = TRUE;
-		OnHScroll(0, 0, NULL);
+
+	std::vector<CString> devNames;
+	int devIdx = 1;
+	for (unsigned i = 0; i < count; i++) {
+		if (aud_dev_info[i].output_count > 0) {
+			CString devName = MSIP::Utf8DecodeUni(aud_dev_info[i].name);
+			bool isChecked = (!isDefault && accountSettings.audioOutputDevice == devName);
+			menu.AppendMenu(MF_STRING | (isChecked ? MF_CHECKED : 0), ID_AUDIO_OUT_DEV_BASE + devIdx, devName);
+			devNames.push_back(devName);
+			devIdx++;
+		}
 	}
-	button->SetCheck(!button->GetCheck());
+
+	menu.AppendMenu(MF_SEPARATOR);
+	menu.AppendMenu(MF_STRING | (muteOutput ? MF_CHECKED : 0), ID_AUDIO_OUT_DEV_MUTE, Translate(_T("Mute")));
+
+	CRect rect;
+	button->GetWindowRect(&rect);
+	int cmd = menu.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_RIGHTBUTTON, rect.left, rect.bottom, this);
+
+	if (cmd == ID_AUDIO_OUT_DEV_BASE) {
+		accountSettings.audioOutputDevice = _T("");
+		accountSettings.SettingsSave();
+		mainDlg->UpdateSoundDevicesIds();
+		msip_set_sound_device(msip_audio_output, true);
+		UpdateAudioTooltips();
+	} else if (cmd == ID_AUDIO_OUT_DEV_MUTE) {
+		ToggleMuteOutput();
+	} else if (cmd > ID_AUDIO_OUT_DEV_BASE && cmd < ID_AUDIO_OUT_DEV_BASE + devIdx) {
+		int sel = cmd - ID_AUDIO_OUT_DEV_BASE - 1;
+		if (sel >= 0 && sel < (int)devNames.size()) {
+			accountSettings.audioOutputDevice = devNames[sel];
+			accountSettings.SettingsSave();
+			mainDlg->UpdateSoundDevicesIds();
+			msip_set_sound_device(msip_audio_output, true);
+			UpdateAudioTooltips();
+		}
+	}
 }
 
 void Dialer::OnBnClickedMuteInput()
 {
 	CButton *button = (CButton*)GetDlgItem(IDC_BUTTON_MUTE_INPUT);
-	if (button->GetCheck() == BST_CHECKED) {
-		button->SetIcon(m_hIconMuteInput);
-		muteInput = FALSE;
-		OnHScroll(0, 0, NULL);
+
+	CMenu menu;
+	menu.CreatePopupMenu();
+
+	bool isDefault = accountSettings.audioInputDevice.IsEmpty();
+	menu.AppendMenu(MF_STRING | (isDefault ? MF_CHECKED : 0), ID_AUDIO_IN_DEV_BASE, Translate(_T("Default")));
+
+	unsigned count = PJMEDIA_AUD_MAX_DEVS;
+	pjmedia_aud_dev_info aud_dev_info[PJMEDIA_AUD_MAX_DEVS];
+	if (is_pjsua_running()) {
+		pjsua_enum_aud_devs(aud_dev_info, &count);
+	} else {
+		count = 0;
 	}
-	else {
-		button->SetIcon(m_hIconMutedInput);
-		muteInput = TRUE;
-		OnHScroll(0, 0, NULL);
+
+	std::vector<CString> devNames;
+	int devIdx = 1;
+	for (unsigned i = 0; i < count; i++) {
+		if (aud_dev_info[i].input_count > 0) {
+			CString devName = MSIP::Utf8DecodeUni(aud_dev_info[i].name);
+			bool isChecked = (!isDefault && accountSettings.audioInputDevice == devName);
+			menu.AppendMenu(MF_STRING | (isChecked ? MF_CHECKED : 0), ID_AUDIO_IN_DEV_BASE + devIdx, devName);
+			devNames.push_back(devName);
+			devIdx++;
+		}
 	}
-	button->SetCheck(!button->GetCheck());
-	if (accountSettings.headsetSupport) {
-		Hid::SetMute(muteInput);
+
+	menu.AppendMenu(MF_SEPARATOR);
+	menu.AppendMenu(MF_STRING | (muteInput ? MF_CHECKED : 0), ID_AUDIO_IN_DEV_MUTE, Translate(_T("Mute")));
+
+	CRect rect;
+	button->GetWindowRect(&rect);
+	int cmd = menu.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_RIGHTBUTTON, rect.left, rect.bottom, this);
+
+	if (cmd == ID_AUDIO_IN_DEV_BASE) {
+		accountSettings.audioInputDevice = _T("");
+		accountSettings.SettingsSave();
+		mainDlg->UpdateSoundDevicesIds();
+		msip_set_sound_device(msip_audio_output, true);
+		UpdateAudioTooltips();
+	} else if (cmd == ID_AUDIO_IN_DEV_MUTE) {
+		ToggleMuteInput();
+	} else if (cmd > ID_AUDIO_IN_DEV_BASE && cmd < ID_AUDIO_IN_DEV_BASE + devIdx) {
+		int sel = cmd - ID_AUDIO_IN_DEV_BASE - 1;
+		if (sel >= 0 && sel < (int)devNames.size()) {
+			accountSettings.audioInputDevice = devNames[sel];
+			accountSettings.SettingsSave();
+			mainDlg->UpdateSoundDevicesIds();
+			msip_set_sound_device(msip_audio_output, true);
+			UpdateAudioTooltips();
+		}
+	}
+}
+
+CString Dialer::GetAudioInputTooltip()
+{
+	CString tip;
+	CString dev = accountSettings.audioInputDevice.IsEmpty() ? Translate(_T("Default")) : accountSettings.audioInputDevice;
+	tip.Format(_T("%s: %s"), Translate(_T("Microphone")), dev.GetString());
+	if (muteInput) {
+		CString muted = Translate(_T("Muted"));
+		CString extra;
+		extra.Format(_T(" (%s)"), muted.GetString());
+		tip += extra;
+	}
+	return tip;
+}
+
+CString Dialer::GetAudioOutputTooltip()
+{
+	CString tip;
+	CString dev = accountSettings.audioOutputDevice.IsEmpty() ? Translate(_T("Default")) : accountSettings.audioOutputDevice;
+	tip.Format(_T("%s: %s"), Translate(_T("Speaker")), dev.GetString());
+	if (muteOutput) {
+		CString muted = Translate(_T("Muted"));
+		CString extra;
+		extra.Format(_T(" (%s)"), muted.GetString());
+		tip += extra;
+	}
+	return tip;
+}
+
+void Dialer::UpdateAudioTooltips()
+{
+	if (m_ToolTip.m_hWnd) {
+		m_ToolTip.UpdateTipText(GetAudioOutputTooltip(), GetDlgItem(IDC_BUTTON_MUTE_OUTPUT));
+		m_ToolTip.UpdateTipText(GetAudioInputTooltip(), GetDlgItem(IDC_BUTTON_MUTE_INPUT));
 	}
 }
 

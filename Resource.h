@@ -529,6 +529,11 @@
 #define IDC_STATIC_SIP_PROXY 1206
 #define IDC_STATIC_DOMAIN 1207
 
+#define ID_AUDIO_IN_DEV_BASE 41000
+#define ID_AUDIO_IN_DEV_MUTE 41099
+#define ID_AUDIO_OUT_DEV_BASE 41100
+#define ID_AUDIO_OUT_DEV_MUTE 41199
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

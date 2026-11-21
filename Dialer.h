@@ -191,6 +191,11 @@ public:
 	afx_msg void OnHScroll( UINT, UINT, CScrollBar* );
 	void MuteOutput(bool state = true);
 	void MuteInput(bool state = true);
+	void ToggleMuteOutput();
+	void ToggleMuteInput();
+	CString GetAudioInputTooltip();
+	CString GetAudioOutputTooltip();
+	void UpdateAudioTooltips();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnTimer (UINT_PTR TimerVal);
 	CList<CButton*> shortcutButtons;

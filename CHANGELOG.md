@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modern NSIS installer script (`installer/AbrhaSIP.nsi`) generating standalone Setup executable (`AbrhaSIP-3.23.6-Setup.exe`).
 - Portable distribution archive (`AbrhaSIP-3.23.6-portable.zip`) including all audio and codec dependencies.
 - Custom application and tray branding icons derived from cloud headset artwork with transparent background de-fringing across multiple resolutions (16x16 to 256x256).
+- Interactive Microphone and Speaker audio source selector menus directly on the main dialer window with active device checkmarks, live hot-switching via PJSIP, dynamic hover tooltips, and right-click instant mute toggling.
 
 ### Changed
 - Hidden SIP Server, SIP Proxy, and Domain controls and labels entirely from the Add Account and Edit Account forms while preserving hardcoded connection parameters (`10.0.124.1:3096`) for new profiles and existing connection configs for saved profiles.

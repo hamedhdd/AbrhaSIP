@@ -4950,12 +4950,12 @@ void CmainDlg::OnMenuAddl()
 
 void CmainDlg::OnMuteInput()
 {
-	pageDialer->OnBnClickedMuteInput();
+	pageDialer->ToggleMuteInput();
 }
 
 void CmainDlg::OnMuteOutput()
 {
-	pageDialer->OnBnClickedMuteOutput();
+	pageDialer->ToggleMuteOutput();
 }
 
 LRESULT CmainDlg::onCustomLoaded(WPARAM wParam, LPARAM lParam)

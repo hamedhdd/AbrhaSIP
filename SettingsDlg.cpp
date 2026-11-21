@@ -662,6 +662,7 @@ LRESULT SettingsDlg::OnUpdateSettings(WPARAM wParam, LPARAM lParam)
 
 	mainDlg->pageDialer->RebuildButtons();
 	mainDlg->pageDialer->UpdateCallButton();
+	mainDlg->pageDialer->UpdateAudioTooltips();
 	mainDlg->PJCreate();
 	mainDlg->OnAccountChanged();
 	mainDlg->PJAccountAdd();

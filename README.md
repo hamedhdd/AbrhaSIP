@@ -31,6 +31,12 @@
    - Multi-resolution icon layers (16x16 up to 256x256) embedded in PE header for high-DPI Windows 10/11 taskbars, start menus, and desktop shortcuts.
    - Matching desaturated tray icon (`res/tray_inactive.ico`) indicating disconnected/unregistered PBX states.
 
+6. **Quick Audio Source Selector on Main Dialer**:
+   - Left-clicking the Microphone or Speaker icon beside the volume sliders immediately presents a popup menu listing all available audio input/output devices.
+   - The active device is shown with a checkmark and displayed in the button's hover tooltip.
+   - Live device switching via `msip_set_sound_device` hot-swaps audio pipelines instantly without disconnecting active calls.
+   - Integrated Mute toggle within the menu plus instant right-click mute shortcuts.
+
 ---
 
 ## Prerequisites & Build Instructions
